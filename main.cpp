@@ -37,6 +37,10 @@ int main()//main function
   Serial.begin(9600);//set baud rate for communication with the microcontroller
   sei();//enable global interrupts
   
+//   for (int i = 1000; i < 2000; i++){
+//         _delay_ms(1);
+//         IncFreq(i);
+//   }
 
   float x_coordinate = 0;//variable used to stor the x coordinate
   float y_coordinate = 0;//variable used to stor the y coordinate
