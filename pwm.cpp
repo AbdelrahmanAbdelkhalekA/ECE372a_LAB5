@@ -5,6 +5,42 @@
 //----------------------------------------------------------------------//
 
 
+// void initPWM_Timer4(){
+//     //PWM mode 15 bit, OCR4A is the output
+//     //Using timer4 for variable frequency
+//     // WGM4[3:0] = 1 1 1 1
+//     TCCR4A |= (1 << WGM40) | (1 << WGM41); 
+//     TCCR4B |= (1 << WGM42) | (1 << WGM43); 
+
+//     //set non-inverting mode - start high 
+//     //COM4A[1:0] = 1 0
+//     TCCR4A |=   (1 << COM4C1);
+//     TCCR4A &=  ~(1 << COM4C0);
+    
+//     // set prescalar of 1
+//     //CS4[2:0] = 0 0 1
+//     TCCR4B |= (1 << CS40);
+//     TCCR4B &= ~( (1 << CS41) | (1 << CS42));
+
+//     //set header pin 8 to output
+//     DDRH |= (1 << DDH5);
+
+//  }
+
+//  void turnOffBuzzer(){
+//    OCR4C = 0;
+//  }
+
+//  void IncFreq(unsigned int frequency){
+   
+//     OCR4A = 16000000 / frequency;
+//     OCR4AH = OCR4A >> 8;
+//     OCR4AL = OCR4A;
+//     OCR4CH = OCR4AH >> 1;
+//     OCR4CL = OCR4AL >> 1;
+   
+//  } 
+
 #include "PWM.h"
 #include <Arduino.h>
 
