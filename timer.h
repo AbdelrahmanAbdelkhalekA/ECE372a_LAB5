@@ -1,7 +1,7 @@
-// Author: Timothy Haines
-// Net ID: timothyhaines
-// Date: 3/20/2021
-// Assignment: Lab 4
+// Authors/Group Members: Abdelrahman Ahmed Abdelkhalek, Timothy Haines, Paz Davila, George Davis
+// Net ID: abdelkhalek, timothyhaines, davilap1 ,gdavis3
+// Date: 4/24/23
+// Assignment: Lab 5
 //----------------------------------------------------------------------//
 
 #ifndef TIMER_H

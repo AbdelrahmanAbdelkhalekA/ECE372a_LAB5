@@ -1,9 +1,14 @@
+// Authors/Group Members: Abdelrahman Ahmed Abdelkhalek, Timothy Haines, Paz Davila, George Davis
+// Net ID: abdelkhalek, timothyhaines, davilap1 ,gdavis3
+// Date: 4/24/23
+// Assignment: Lab 5
+//----------------------------------------------------------------------//
 #ifndef I2C_H
 #define I2C_H
 
 #define SLAVE_ADDRESS 0x68
-#define PWR_MGMT 0x6B
-#define WAKEUP 0x00
+#define PWR_MGMT 0x6B //power management address
+#define WAKEUP 0x00 //wakeup mode
 #define ACCEL_XOUT_HIGH 0x3B
 #define ACCEL_XOUT_LOW 0x3C
 #define ACCEL_YOUT_HIGH 0x3D

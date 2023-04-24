@@ -1,4 +1,8 @@
-
+// Authors/Group Members: Abdelrahman Ahmed Abdelkhalek, Timothy Haines, Paz Davila, George Davis
+// Net ID: abdelkhalek, timothyhaines, davilap1 ,gdavis3
+// Date: 4/24/23
+// Assignment: Lab 5
+//----------------------------------------------------------------------//
 
 
 #include "PWM.h"
@@ -31,34 +35,21 @@ void initTimer3()
   TCCR3B |= (1 << CS32);
 
   //PWM frequency
-  OCR3A = 15999;
+  OCR3A = 5999;
 
 
 
   //duty cycle
-  OCR3B = 15999*0.7;
+  OCR3B = 5999*0.1;
   
 
 }
 
 void change_duty(float duty)
 {
-  OCR3B = 15999*0;
+  OCR3B = 5999*duty;
    //Serial.println(OCR3B);
    //Serial.flush();
-}
-
-
-void turn_left()
-{
-  PORTH &= ~(1 << PORTH5);
-  PORTH |= (1 << PORTH6);
-}
-
-void turn_right()
-{
-  PORTH |= (1 << PORTH5);
-  PORTH &= ~(1 << PORTH6);
 }
 
 void PWMoff()

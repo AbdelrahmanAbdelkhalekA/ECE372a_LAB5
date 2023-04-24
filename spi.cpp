@@ -1,3 +1,8 @@
+// Authors/Group Members: Abdelrahman Ahmed Abdelkhalek, Timothy Haines, Paz Davila, George Davis
+// Net ID: abdelkhalek, timothyhaines, davilap1 ,gdavis3
+// Date: 4/24/23
+// Assignment: Lab 5
+//----------------------------------------------------------------------//
 
 #include <Arduino.h>
 #include "spi.h"
@@ -5,17 +10,17 @@
 #include <avr/io.h>
 
 
-#define DDR_SPI DDRB
-#define DD_SS DDB0
-#define DD_SCK DDB1
-#define DD_MOSI DDB2
-#define DD_MISO DDB3
-#define SPI_PORT PORTB
-#define SPI_SS_BIT PORTB0
+#define DDR_SPI DDRB//data direction register for SPI
+#define DD_SS DDB0//bit in data direction register for the SS signal
+#define DD_SCK DDB1//bit in data direction register for the SCK signal
+#define DD_MOSI DDB2//bit in data direction register for the MOSI signal
+#define DD_MISO DDB3//bit in data direction register for the MISO signal
+#define SPI_PORT PORTB//port for our spi output
+#define SPI_SS_BIT PORTB0//pin in  our spi output register what we will be using to output data
 
 
 
-void init_spi()
+void init_spi()//initialize the spi module on the ATmega 2560
 {
   DDR_SPI |= (1 << DD_SS); //SS
   DDR_SPI |= (1 << DD_SCK); //SCK (CLOCK)
@@ -28,7 +33,7 @@ void init_spi()
   SPCR |= (1 << CPOL); //high when idle
   SPCR |= (1 << CPHA); // setup on the leading edge
   
-  //fosc/128
+  //set fosc/128 (I don't think it really matters for our case)
   SPCR |= (1 << SPR0);
   SPCR |= (1 << SPR1);
 }
@@ -63,7 +68,7 @@ void change_display_test_mode(unsigned char testMode)
   SPI_MasterTransmit_REGISTER_then_DATA(0x0F, testMode);//display test
 }
 
-void display_happy_face()
+void display_happy_face()//this is the function that will display a happy face
 {
   SPI_MasterTransmit_REGISTER_then_DATA(0x01, 0b00000000);
   SPI_MasterTransmit_REGISTER_then_DATA(0x02, 0b01100110);
@@ -75,7 +80,7 @@ void display_happy_face()
   SPI_MasterTransmit_REGISTER_then_DATA(0x08, 0b00111100);
 }
 
-void display_sad_face()
+void display_sad_face()//this is the function that will display a sad face
 {
   SPI_MasterTransmit_REGISTER_then_DATA(0x01, 0b00000000);
   SPI_MasterTransmit_REGISTER_then_DATA(0x02, 0b01100110);
