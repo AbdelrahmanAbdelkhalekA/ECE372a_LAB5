@@ -28,7 +28,7 @@ void initTimer3()
 
   TCCR3B |= (1 << CS30); //prescaler
   TCCR3B &= ~(1 << CS31);
-  TCCR3B &= ~(1 << CS32);
+  TCCR3B |= (1 << CS32);
 
   //PWM frequency
   OCR3A = 15999;
@@ -36,14 +36,14 @@ void initTimer3()
 
 
   //duty cycle
-  OCR3B = 15999*0.55;
+  OCR3B = 15999*0.7;
   
 
 }
 
 void change_duty(float duty)
 {
-  OCR3B = 15999*duty;
+  OCR3B = 15999*0;
    //Serial.println(OCR3B);
    //Serial.flush();
 }
@@ -63,7 +63,5 @@ void turn_right()
 
 void PWMoff()
 {
-  TCCR3B &= ~(1 << CS30); //prescaler
-  TCCR3B &= ~(1 << CS31);
-  TCCR3B &= ~(1 << CS32);
+  DDRE  &= ~(1 << DDE4);
 }

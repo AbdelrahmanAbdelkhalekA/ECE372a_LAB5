@@ -1,57 +1,44 @@
+
 #include "i2c.h"
 #include <avr/io.h>
 #include "Arduino.h"
 
+
+
+
 #define wait_for_completion while(!(TWCR & (1 << TWINT)));
 
 
-void initI2C() {
-  PRR0 &= ~(1<<PRTWI);  // wake up I2C module on AT2560 power management register
+void InitI2C()
+{
+  PRR0 &= ~(1<<PRTWI);  // wake up I2C module on AT2560
   TWSR |= (1 << TWPS0);  // prescaler power = 1
-  TWSR &= ~(1 << TWPS1); // prescaler power = 1 
-  //𝑇𝑊𝐵𝑅=((𝐶𝑃𝑈 𝐶𝑙𝑜𝑐𝑘 𝑓𝑟𝑒𝑞𝑢𝑒𝑛𝑐𝑦)/(𝑆𝐶𝐿 𝑓𝑟𝑒𝑞𝑢𝑒𝑛𝑐𝑦)−16)/(2∗〖(4)〗^𝑇𝑊𝑃𝑆 )
   TWBR = 0xC6; // bit rate generator = 10k  (TWBR = 198)
-
+  TWBR = 0xC6; // bit rate generator = 10k  (TWBR = 198)
   TWCR |= (1 << TWINT )| (1 << TWEN); // enable two wire interface
 
 }
 
- 
-void StartI2C_Trans(unsigned char SLA) {
+void StartI2C_Trans(unsigned char SLA)
+{
 // this function initiates a start condition and calls slave device with SLA
   TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN); // clear TWINT, intiate a start condition and enable
   wait_for_completion;
   TWDR = (SLA << 1); // slave address + write bit '0'
   TWCR = (1<<TWINT)|(1<<TWEN);  // trigger action:clear flag and enable TWI
   wait_for_completion;
+
 }
 
-void StopI2C_Trans() {
-  // this function sends a stop condition to stop I2C transmission
-
+void StopI2C_Trans()
+{
   TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWSTO); //trigger action:  send stop condition
 
 }
 
-void writeTo(unsigned char SLA, unsigned char REGADDRESS, unsigned char data) {
-  StartI2C_Trans(SLA);
-
-  write(REGADDRESS);
-  write(data);
-
-  StopI2C_Trans();
-  }
-
-void write(unsigned char data){
-  // this function loads the data passed into the I2C data register and transmits
-  TWDR = data; //load data into TWDR register
-  TWCR = (1<<TWINT)|(1<<TWEN);  // trigger action:  clear flag and enable TWI
-  wait_for_completion;
-}
-void Read_from(unsigned char SLA, unsigned char MEMADDRESS){
-  // this function sets up reading from SLA at the SLA MEMADDRESS 
-
-  StartI2C_Trans(SLA);
+void Read_from(unsigned char SLA, unsigned char MEMADDRESS)
+{
+ StartI2C_Trans(SLA);
  
   write(MEMADDRESS);
   
@@ -63,12 +50,57 @@ void Read_from(unsigned char SLA, unsigned char MEMADDRESS){
   TWCR = (1<< TWINT) | (1 << TWEN);  // master can send a nack now
   wait_for_completion;
   TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO); // Stop condition
-// after this function is executed the TWDR register has the data from SLA that Master wants to read
-}
-  
-unsigned char Read_data() // Returns the last byte  from the data register
-{
 
+}
+
+unsigned char Read_data()
+{
   return TWDR;
 }
-  
+
+void write(unsigned char data)
+{
+  TWDR = data; //load data into TWDR register
+  TWCR = (1<<TWINT)|(1<<TWEN);  // trigger action:  clear flag and enable TWI
+  wait_for_completion;
+}
+
+float get_x_coordinate()
+{
+    float return_x_value;
+    signed int x_coordinate = 1.0;
+    Read_from(SLAVE_ADDRESS, ACCEL_XOUT_HIGH);
+    x_coordinate = Read_data();
+    Read_from(SLAVE_ADDRESS, ACCEL_XOUT_LOW);
+    x_coordinate = (x_coordinate << 8);
+    x_coordinate |= Read_data();
+    return_x_value = (x_coordinate/16384.0);
+    // Serial.println(return_x_value);
+    return return_x_value;
+}
+
+float get_y_coordinate()
+{
+    float return_y_value;
+    signed int y_coordinate = 0;
+    Read_from(SLAVE_ADDRESS, ACCEL_YOUT_HIGH);
+    y_coordinate = Read_data();
+    Read_from(SLAVE_ADDRESS, ACCEL_YOUT_LOW);
+    y_coordinate = (y_coordinate << 8);
+    y_coordinate |= Read_data();
+    return_y_value = ((y_coordinate/16384.0));
+    return return_y_value;
+}
+
+float get_z_coordinate()
+{
+    float return_z_value;
+    signed int z_coordinate = 0;
+    Read_from(SLAVE_ADDRESS, ACCEL_ZOUT_HIGH);
+    z_coordinate = Read_data();
+    Read_from(SLAVE_ADDRESS, ACCEL_ZOUT_LOW);
+    z_coordinate = (z_coordinate << 8);
+    z_coordinate |= Read_data();
+    return_z_value = ((z_coordinate/16384.0));
+    return return_z_value;
+}
